@@ -31,7 +31,7 @@ class Admin
     use HasAssets;
     use HasHtml;
 
-    const VERSION = '2.2.2-beta';
+    const VERSION = '2.2.4';
 
     const SECTION = [
         // 往 <head> 标签内输入内容
@@ -245,10 +245,10 @@ class Admin
             $repository = EloquentRepository::make($repository);
         }
 
-        if (! $repository instanceof Repository) {
+        if (!$repository instanceof Repository) {
             $class = is_object($repository) ? get_class($repository) : $repository;
 
-            throw new InvalidArgumentException("The class [{$class}] must be a type of [".Repository::class.'].');
+            throw new InvalidArgumentException("The class [{$class}] must be a type of [" . Repository::class . '].');
         }
 
         return $repository;
@@ -397,7 +397,7 @@ class Admin
      */
     public static function renderContents()
     {
-        if (! static::shouldPrevent()) {
+        if (!static::shouldPrevent()) {
             return;
         }
 
@@ -418,11 +418,11 @@ class Admin
         static::fonts([]);
 
         return $results
-            .static::html()
-            .$asset->jsToHtml()
-            .$asset->cssToHtml()
-            .$asset->scriptToHtml()
-            .$asset->styleToHtml();
+        . static::html()
+        . $asset->jsToHtml()
+        . $asset->cssToHtml()
+        . $asset->scriptToHtml()
+        . $asset->styleToHtml();
     }
 
     /**
@@ -498,7 +498,7 @@ class Admin
 
                 $finalGroup[] = $mid;
 
-                if (! isset($group[$next]) || $group[$next] !== 'admin.permission') {
+                if (!isset($group[$next]) || $group[$next] !== 'admin.permission') {
                     continue;
                 }
 
@@ -540,7 +540,7 @@ class Admin
 
         $pjaxId = static::getPjaxContainerId();
 
-        $jsVariables['pjax_container_selector'] = $pjaxId ? ('#'.$pjaxId) : '';
+        $jsVariables['pjax_container_selector'] = $pjaxId ? ('#' . $pjaxId) : '';
         $jsVariables['token'] = csrf_token();
         $jsVariables['lang'] = ($lang = __('admin.client')) ? array_merge($lang, $jsVariables['lang'] ?? []) : [];
         $jsVariables['colors'] = static::color()->all();
@@ -573,7 +573,7 @@ class Admin
     public static function routes()
     {
         $attributes = [
-            'prefix'     => config('admin.route.prefix'),
+            'prefix' => config('admin.route.prefix'),
             'middleware' => config('admin.route.middleware'),
         ];
 
@@ -595,11 +595,11 @@ class Admin
 
                 $authController = config('admin.auth.controller', AuthController::class);
 
-                $router->get('auth/login', $authController.'@getLogin');
-                $router->post('auth/login', $authController.'@postLogin');
-                $router->get('auth/logout', $authController.'@getLogout');
-                $router->get('auth/setting', $authController.'@getSetting');
-                $router->put('auth/setting', $authController.'@putSetting');
+                $router->get('auth/login', $authController . '@getLogin');
+                $router->post('auth/login', $authController . '@postLogin');
+                $router->get('auth/logout', $authController . '@getLogout');
+                $router->get('auth/setting', $authController . '@getSetting');
+                $router->put('auth/setting', $authController . '@putSetting');
             });
         }
 
@@ -614,10 +614,10 @@ class Admin
     public static function registerApiRoutes()
     {
         $attributes = [
-            'prefix'     => admin_base_path('dcat-api'),
+            'prefix' => admin_base_path('dcat-api'),
             'middleware' => config('admin.route.middleware'),
-            'namespace'  => 'Dcat\Admin\Http\Controllers',
-            'as'         => 'dcat-api.',
+            'namespace' => 'Dcat\Admin\Http\Controllers',
+            'as' => 'dcat-api.',
         ];
 
         app('router')->group($attributes, function ($router) {
@@ -640,12 +640,12 @@ class Admin
      */
     public static function registerHelperRoutes()
     {
-        if (! config('admin.helpers.enable', true) || ! config('app.debug')) {
+        if (!config('admin.helpers.enable', true) || !config('app.debug')) {
             return;
         }
 
         $attributes = [
-            'prefix'     => config('admin.route.prefix'),
+            'prefix' => config('admin.route.prefix'),
             'middleware' => config('admin.route.middleware'),
         ];
 

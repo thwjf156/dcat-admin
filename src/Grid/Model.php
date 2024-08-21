@@ -35,6 +35,11 @@ class Model
     protected $repository;
 
     /**
+     * @var Repository
+     */
+    protected $originalRepository;
+
+    /**
      * @var AbstractPaginator
      */
     protected $paginator;
@@ -136,6 +141,7 @@ class Model
     {
         if ($repository) {
             $this->repository = Admin::repository($repository);
+            $this->originalRepository = $repository;
         }
 
         $this->request = $request;
@@ -467,6 +473,28 @@ class Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Builder|EloquentModel
+     */
+    public function getQueryBuilder()
+    {
+        if ($this->relation) {
+            return $this->relation->getQuery();
+        }
+
+        # $this->setSort();
+
+        $queryBuilder = $this->originalRepository;
+
+        $this->queries->reject(function ($query) {
+            return in_array($query['method'], ['get', 'paginate']);
+        })->each(function ($query) use (&$queryBuilder) {
+            $queryBuilder = $queryBuilder->{$query['method']}(...$query['arguments']);
+        });
+
+        return $queryBuilder;
+    }
+
+    /**
      * @param  AbstractPaginator  $paginator
      * @return void
      */
@@ -507,7 +535,7 @@ class Model
      */
     public function getCurrentPage()
     {
-        if (! $this->usePaginate) {
+        if (!$this->usePaginate) {
             return;
         }
 
@@ -531,7 +559,7 @@ class Model
      */
     public function getPerPage()
     {
-        if (! $this->usePaginate) {
+        if (!$this->usePaginate) {
             return;
         }
 
@@ -639,7 +667,7 @@ class Model
     public function addQuery(string $method, array $arguments = [])
     {
         $this->queries->push([
-            'method'    => $method,
+            'method' => $method,
             'arguments' => $arguments,
         ]);
 
@@ -668,7 +696,7 @@ class Model
     public function apply($query, bool $fetch = false, $columns = null)
     {
         $this->getQueries()->unique()->each(function ($value) use (&$query, $fetch, $columns) {
-            if (! $fetch && in_array($value['method'], ['paginate', 'simplePaginate', 'get'], true)) {
+            if (!$fetch && in_array($value['method'], ['paginate', 'simplePaginate', 'get'], true)) {
                 return;
             }
 

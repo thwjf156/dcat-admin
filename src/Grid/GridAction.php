@@ -27,6 +27,14 @@ abstract class GridAction extends Action
     }
 
     /**
+     * @return Grid
+     */
+    public function getGrid()
+    {
+        return $this->parent;
+    }
+
+    /**
      * Get url path of current resource.
      *
      * @return string

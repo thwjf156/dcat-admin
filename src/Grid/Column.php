@@ -72,29 +72,29 @@ class Column
      * @var array
      */
     protected static $displayers = [
-        'switch'           => Displayers\SwitchDisplay::class,
-        'switchGroup'      => Displayers\SwitchGroup::class,
-        'select'           => Displayers\Select::class,
-        'image'            => Displayers\Image::class,
-        'label'            => Displayers\Label::class,
-        'button'           => Displayers\Button::class,
-        'link'             => Displayers\Link::class,
-        'badge'            => Displayers\Badge::class,
-        'progressBar'      => Displayers\ProgressBar::class,
-        'radio'            => Displayers\Radio::class,
-        'checkbox'         => Displayers\Checkbox::class,
-        'table'            => Displayers\Table::class,
-        'expand'           => Displayers\Expand::class,
-        'modal'            => Displayers\Modal::class,
+        'switch' => Displayers\SwitchDisplay::class,
+        'switchGroup' => Displayers\SwitchGroup::class,
+        'select' => Displayers\Select::class,
+        'image' => Displayers\Image::class,
+        'label' => Displayers\Label::class,
+        'button' => Displayers\Button::class,
+        'link' => Displayers\Link::class,
+        'badge' => Displayers\Badge::class,
+        'progressBar' => Displayers\ProgressBar::class,
+        'radio' => Displayers\Radio::class,
+        'checkbox' => Displayers\Checkbox::class,
+        'table' => Displayers\Table::class,
+        'expand' => Displayers\Expand::class,
+        'modal' => Displayers\Modal::class,
         'showTreeInDialog' => Displayers\DialogTree::class,
-        'qrcode'           => Displayers\QRCode::class,
-        'downloadable'     => Displayers\Downloadable::class,
-        'copyable'         => Displayers\Copyable::class,
-        'orderable'        => Displayers\Orderable::class,
-        'limit'            => Displayers\Limit::class,
-        'editable'         => Displayers\Input::class,
-        'input'            => Displayers\Input::class,
-        'textarea'         => Displayers\Textarea::class,
+        'qrcode' => Displayers\QRCode::class,
+        'downloadable' => Displayers\Downloadable::class,
+        'copyable' => Displayers\Copyable::class,
+        'orderable' => Displayers\Orderable::class,
+        'limit' => Displayers\Limit::class,
+        'editable' => Displayers\Input::class,
+        'input' => Displayers\Input::class,
+        'textarea' => Displayers\Textarea::class,
     ];
 
     /**
@@ -344,6 +344,16 @@ class Column
     }
 
     /**
+     * @return $this
+     */
+    public function totalRow($display = null)
+    {
+        $this->grid->addTotalRow($this->name, $display);
+
+        return $this;
+    }
+
+    /**
      * Set style of this column.
      *
      * @param  string  $style
@@ -459,7 +469,7 @@ class Column
      */
     public function display($callback, ...$params)
     {
-        $this->displayCallbacks[] = [&$callback, &$params];
+        $this->displayCallbacks[] = [ &$callback, &$params];
 
         return $this;
     }
@@ -471,7 +481,7 @@ class Column
      */
     public function hasDisplayCallbacks()
     {
-        return ! empty($this->displayCallbacks);
+        return !empty($this->displayCallbacks);
     }
 
     /**
@@ -502,7 +512,7 @@ class Column
         foreach ($this->displayCallbacks as $callback) {
             [$callback, $params] = $callback;
 
-            if (! $callback instanceof \Closure) {
+            if (!$callback instanceof \Closure) {
                 $value = $callback;
                 continue;
             }
@@ -553,7 +563,7 @@ class Column
             $row = $this->convertModelToArray($row);
 
             $i++;
-            if (! isset($row['#'])) {
+            if (!isset($row['#'])) {
                 $row['#'] = $i;
             }
 
@@ -778,7 +788,7 @@ class Column
     public function __call($method, $arguments)
     {
         if (
-            ! isset(static::$displayers[$method])
+            !isset(static::$displayers[$method])
             && static::hasMacro($method)
         ) {
             return $this->__macroCall($method, $arguments);
