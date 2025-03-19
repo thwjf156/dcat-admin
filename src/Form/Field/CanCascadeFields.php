@@ -80,8 +80,8 @@ trait CanCascadeFields
 
         ($this->parent ?: $this->form)->cascadeGroup($closure, [
             'column' => $this->column(),
-            'index'  => count($this->conditions) - 1,
-            'class'  => $this->getCascadeClass($value, $operator),
+            'index' => count($this->conditions) - 1,
+            'class' => $this->getCascadeClass($value, $operator),
         ]);
     }
 
@@ -116,7 +116,7 @@ trait CanCascadeFields
 
     protected function addCascadeScript()
     {
-        if (! $script = $this->getCascadeScript()) {
+        if (!$script = $this->getCascadeScript()) {
             return;
         }
 
@@ -142,9 +142,9 @@ JS
 
         $cascadeGroups = collect($this->conditions)->map(function ($condition) {
             return [
-                'class'    => $this->getCascadeClass($condition['value'], $condition['operator']),
+                'class' => $this->getCascadeClass($condition['value'], $condition['operator']),
                 'operator' => $condition['operator'],
-                'value'    => $condition['value'],
+                'value' => $condition['value'],
             ];
         })->toJson();
 
@@ -210,8 +210,10 @@ JS
             var group = parent.find('div.cascade-group.'+event.class);
             if (compare(checked, event.value, event.operator)) {
                 group.removeClass('d-none');
+                group.find(':input').attr('disabled', false);
             } else {
                 group.addClass('d-none');
+                group.find(':input').attr('disabled', true);
             }
         });
     }).trigger(event);
