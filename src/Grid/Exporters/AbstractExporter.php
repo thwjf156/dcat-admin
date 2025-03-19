@@ -179,7 +179,7 @@ abstract class AbstractExporter implements ExporterInterface
      */
     public function getFilename()
     {
-        return $this->filename ?: (admin_trans_label().'-'.date('Ymd-His').'-'.Str::random(6));
+        return $this->filename ?: (admin_trans_label() . '-' . date('Ymd-His') . '-' . Str::random(6));
     }
 
     /**
@@ -211,7 +211,8 @@ abstract class AbstractExporter implements ExporterInterface
 
         $model->reset();
 
-        return $this->normalize($this->callBuilder($array));
+        return $this->callBuilder($array);
+        //return $this->normalize($this->callBuilder($array));
     }
 
     /**
