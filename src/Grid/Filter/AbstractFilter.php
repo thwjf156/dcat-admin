@@ -88,7 +88,7 @@ abstract class AbstractFilter
     /**
      * @var int
      */
-    protected $width = 10;
+    protected $width = 12;
 
     /**
      * @var string
@@ -160,7 +160,7 @@ abstract class AbstractFilter
         if (is_numeric($width)) {
             $this->width = $width;
         } else {
-            $this->style = "width:$width;padding-left:10px;padding-right:10px";
+            $this->style = "width:$width;padding-left:14px;padding-right:14px";
             $this->width = ' ';
         }
 
@@ -213,7 +213,7 @@ abstract class AbstractFilter
             return $columns;
         }
 
-        return $this->parent->grid()->makeName('filter-column-'.str_replace('.', '-', $columns));
+        return $this->parent->grid()->makeName('filter-column-' . str_replace('.', '-', $columns));
     }
 
     /**
@@ -242,7 +242,7 @@ abstract class AbstractFilter
      */
     public function siblings($index = null)
     {
-        if (! is_null($index)) {
+        if (!is_null($index)) {
             return Arr::get($this->parent->filters(), $index);
         }
 
@@ -445,7 +445,7 @@ abstract class AbstractFilter
      */
     protected function presenter()
     {
-        if (! $this->presenter) {
+        if (!$this->presenter) {
             $this->setupDefaultPresenter();
         }
 
@@ -585,7 +585,7 @@ abstract class AbstractFilter
         $method = class_exists(WhereHasInServiceProvider::class) ? 'whereHasIn' : 'whereHas';
 
         return [$method => [implode('.', $column), function ($q) use ($relColumn, $params) {
-            $relColumn = is_string($relColumn) ? $q->getModel()->getTable().'.'.$relColumn : $relColumn;
+            $relColumn = is_string($relColumn) ? $q->getModel()->getTable() . '.' . $relColumn : $relColumn;
             array_unshift($params, $relColumn);
 
             call_user_func_array([$q, $this->query], $params);
@@ -600,8 +600,8 @@ abstract class AbstractFilter
     protected function defaultVariables()
     {
         return array_merge([
-            'id'    => $this->id,
-            'name'  => $this->formatName($this->column),
+            'id' => $this->id,
+            'name' => $this->formatName($this->column),
             'label' => $this->label,
             'value' => $this->normalizeValue(),
             'width' => $this->width,
