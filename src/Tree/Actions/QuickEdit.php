@@ -11,7 +11,8 @@ class QuickEdit extends RowAction
 
     public function html()
     {
-        [$width, $height] = $this->dialogFormDimensions;
+        [$width, $height] = $this->actions->parent()->dialogFormDimensions;
+        //[$width, $height] = $this->dialogFormDimensions;
 
         Form::dialog(trans('admin.edit'))
             ->click('.tree-quick-edit')
